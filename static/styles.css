@@ -1,0 +1,139 @@
+
+
+.my-header-container {
+min-width:  90%;
+}
+
+hr {
+margin: auto;
+background-color:white;
+}
+
+.main-div {
+min-height: 88.15vh;
+
+}
+
+.my-check-div {
+margin: 10px 0 10px 5%;
+
+}
+
+
+/*
+.my-check-div-add:hover {
+opacity: 80%
+}
+*/
+.my-card {
+min-height: 800px;
+}
+.my-card-min {
+min-height: 200px;
+}
+
+.my-card-add , .my-card-add-title {
+
+min-height: 909px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+
+}
+
+.my-card-add:hover {
+opacity: 50%;
+
+
+}
+
+.title-p {
+border: 0;
+display:  block;
+width:100%;
+}
+
+.title-p:empty:not(:focus)::before {
+  content: attr(data-placeholder);
+}
+
+
+::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: white;
+  opacity: 1; /* Firefox */
+}
+
+input:focus {
+    color: light-grey;
+    display-3
+}
+
+.options-btn {
+text-align: left;
+
+}
+
+.my-form-toggle {
+margin: 0 15px 0 5px;
+}
+
+.my_user-form{
+display: flex;
+justify-content: center;
+align-items: center;
+text-align: center;
+}
+
+.no-pad {
+padding: 0
+}
+
+.btn-add {
+margin-left: 5px;
+}
+
+
+.text-add {
+justify-content: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+overflow-wrap: break-word;
+
+p {
+margin: 0
+
+}
+
+.btn-delete {
+opacity: 0%;
+}
+
+.btn-delete:hover {
+opacity: 50%;
+}
+
+footer {
+margin: 0;
+}
+
+.my-footer-text {
+margin-left: 10%;
+}
+
+a {
+text-decoration: none;
+}
+
+.warning-text {
+color:red;
+}
+
+.mobile-friendly {
+width: 100%;
+}
+/* Style the form - display items horizontally */

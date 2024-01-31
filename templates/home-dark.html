@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Todo-app</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+    <link rel="stylesheet" href="./static/styles.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"
+            crossorigin="anonymous"></script>
+<body>
+<header class="p-3 text-bg-dark">
+    <div class="container my-header-container">
+        <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+            {% if user %}
+            <p class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-light text-decoration-none">
+                <span class="fs-4 fw-light">To-do | {{user.email}}</span>
+            </p>
+
+
+            <div class="form-check form-switch my-form-toggle">
+                <form action="{{url_for('toggle_mode')}}"
+                      method="post">
+                    <input class="form-check-input" type="submit" role="switch" id="2" value="">
+                    <label class="form-check-label " for="2">dark/light</label>
+                </form>
+            </div>
+            <div class="text-end">
+                <a href="{{url_for('logout')}}">
+                    <button type="button" class="btn btn-outline-light me-2">Logout</button>
+                </a>
+
+            </div>
+
+            {%else%}
+
+            <p class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-light text-decoration-none">
+                <span class="fs-4 fw-light">To-do | Not logged in</span>
+            </p>
+
+            <div class="form-check form-switch my-form-toggle">
+                <form action="{{url_for('toggle_mode')}}"
+                      method="post">
+                    <input class="form-check-input" type="submit" role="switch" id="1" value="">
+                    <label class="form-check-label " for="1">dark/light</label>
+                </form>
+            </div>
+
+            <div class="text-end">
+                <a href="/login">
+                    <button type="button" class="btn btn-outline-light me-2">Login</button>
+                </a>
+                <a href="/sign-up">
+                    <button type="button" class="btn btn-warning">Sign-up</button>
+                </a>
+            </div>
+            {% endif%}
+        </div>
+    </div>
+</header>
+
+
+<hr>
+<div class="bg-dark"><br></div>
+<div class="bg-dark d-flex align-items-stretch main-div ">
+    <div class="container">
+        <div class="row row-cols-1 row-cols-sm-1 row-cols-md-1 row-cols-lg-2 g-2">
+            {%if user %}
+            {% for group in user.todo_groups%}
+            <div class="col">
+                <div class="card shadow-sm  " id="{{group.id}}">
+                    <div class="d-flex flex-column align-items-stretch flex-shrink-0 bg-dark">
+
+                        <div class="d-flex align-items-center flex-shrink-0 p-3 link-dark text-decoration-none border-bottom mobile-friendly ">
+
+                            <div class="container text-center">
+                                <form action="{{url_for('new_title',group_id=group.id,_anchor=group.id)}}"
+                                      method="post">
+
+                                    <div class="row">
+                                        <div class="col-8 col-xl-10">
+                                            <input type="text" name="title" class="fs-5 fw text-white title-p bg-dark"
+                                                   placeholder="{{group.title}}"
+                                                   role="textbox"
+                                                   maxlength="100">
+                                        </div>
+                                        <div class="col-2 col-xl-1">
+                                            {% if group.is_important%}
+                                            <a href="{{url_for('toggle_imp_group',group_id=group.id,_anchor=group.id)}}">
+                                                <button type="button" class="btn btn-outline-warning btn-inline "><i
+                                                        class="bi bi-alarm-fill"></i>
+                                                </button>
+                                            </a>
+                                            {% else %}
+                                            <a href="{{url_for('toggle_imp_group',group_id=group.id,_anchor=group.id)}}">
+                                                <button type="button" class="btn btn-outline-warning btn-inline"><i
+                                                        class="bi bi-alarm"></i>
+                                                </button>
+                                            </a>
+                                            {% endif %}
+                                        </div>
+                                        <div class="col-2 col-xl-1">
+                                            <a href="/delete-group/{{group.id}}">
+                                                <button type="button"
+                                                        class="btn btn-outline-light  me-2 options-btn btn-inline">
+                                                    <i class="bi bi-trash3 "></i>
+                                                    <!--                                                    Delete-->
+                                                </button>
+                                            </a>
+                                        </div>
+                                    </div>
+
+
+                                    <span class="text-warning"></span>
+
+
+                                </form>
+                            </div>
+
+                        </div>
+
+
+                        <div class="list-group list-group-flush border-bottom scrollarea my-card">
+                            {% for item in group.list_items%}
+                                    <div class="form-check my-check-div" id="check-{{item.id}}">
+                                        {%if item.is_important %}
+                                        <span class="text-warning fs-3">!</span>
+                                        {% endif %}
+
+                                        <!--                                <form action="/mark/{{item.id}}" id="check-box" method="post">-->
+                                        {% if item.is_done %}
+                                        <a class="bg-text-light"
+                                           href="{{url_for('mark_false',list_id=item.id,_anchor=group.id)}}">
+                                            <i class="bi bi-check-square text-light"></i>
+                                        </a>
+                                        {% else %}
+                                        <a class="bg-text-light"
+                                           href="{{url_for('mark_true',list_id=item.id,_anchor=group.id)}}">
+                                            <i class="bi bi-square text-light"></i>
+                                        </a>
+                                        {% endif %}
+
+
+                                        <label class="form-check-label text-light">
+
+
+                                            {% if item.is_done %}
+                                            <s>{{item.item}}</s>
+                                            {% else %}
+                                            {{item.item}}
+                                            {% endif %}
+
+                                            <!--                                    <i class="bi bi-caret-right e"></i>-->
+
+
+                                            <span class="btn-delete">
+                                        <button type="button" class="btn btn-outline-dark btn-sm  "
+                                                data-bs-toggle="collapse" data-bs-target="#desc-{{item.id}}"
+                                                aria-expanded="false">desc.</button>
+                                        <a href=" {{url_for('delete_point',point_id=item.id,_anchor=group.id)}}">
+                                        <button type="button"
+                                                class="btn btn-outline-dark btn-sm "><i
+                                                class="bi bi-trash3 text-light"></i>
+                                        </button>
+
+                                        </a>
+                                        {%if item.is_important %}
+                                        <a class="text-warning"
+                                           href="{{url_for('toggle_imp',list_id=item.id,_anchor=group.id)}}">
+                                            !
+                                        </a>
+                                        {% else %}
+                                        <a class="text-light opacity-100"
+                                           href="{{url_for('toggle_imp',list_id=item.id,_anchor=group.id)}}">
+                                            !
+                                        </a>
+                                        {% endif%}
+
+
+                                    </span>
+
+                                        </label>
+                                        <div class="collapse" id="desc-{{item.id}}">
+                                            <div class="card card-body bg-dark text-light opacity-50">
+                                                <form action="{{url_for('new_description',list_id=item.id,_anchor=group.id)}}"
+                                                      method="post">
+                                           <textarea class="text-light title-p bg-dark "
+                                                     placeholder="Text group title... "
+                                                     name="item"
+                                                     maxlength="150"
+                                           >{{item.description}}</textarea>
+                                                    <button type="submit" class="btn btn-outline-light btn-add  "
+                                                            value="Submit"><i
+                                                            class="bi bi-plus-lg "></i> save changes
+                                                    </button>
+
+
+                                                </form>
+
+
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+
+                                {% endfor %}
+
+
+                        </div>
+                        <a>
+                            <form action="{{url_for('add_point',group_id=group.id,_anchor=group.id)}}"
+                                  method="post"
+                                  id="form-add">
+                                <div class="text-light bg-dark my-check-div my-check-div-add text-add">
+
+
+                                <textarea class="text-light title-p bg-dark " placeholder="Text group title... "
+                                          name="item"
+                                          maxlength="150"
+                                ></textarea>
+                                    <button type="submit" class="btn btn-outline-light btn-add  "
+                                            value="Submit"><i
+                                            class="bi bi-plus-lg "></i> task
+                                    </button>
+
+
+                                </div>
+                            </form>
+
+                        </a>
+                    </div>
+                </div>
+            </div> <!-- how each task should look like -->
+            {% endfor %}
+            {%endif%}
+            <div class="col">
+                <div class="card shadow-sm bg-dark ">
+
+                    <a href="{{url_for('add_group')}}">
+                        <div class="d-flex flex-column align-items-stretch flex-shrink-0 bg-dark border center my-card-add   ">
+
+                            <i class="bi bi-plus-circle text-light fs-1 fw-light"></i>
+
+
+                        </div>
+                    </a>
+                </div>
+            </div> <!-- The selection of -->
+
+        </div>
+    </div>
+</div>
+<div class="bg-dark"><br><br></div>
+<footer class="d-flex flex-wrap justify-content-between align-items-center py-3  border-top text-bg-dark">
+    <p class="col-md-4 mb-0 text-muted my-footer-text">Alpha | Intended to improve coding skills</p>
+</footer>
+
+</body>
+</html>

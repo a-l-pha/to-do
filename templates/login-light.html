@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+{% import "bootstrap/wtf.html" as wtf %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Todo-app</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+    <link rel="stylesheet" href="./static/styles.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"
+            crossorigin="anonymous"></script>
+<body>
+<header class="p-3 text-bg-light">
+    <div class="container my-header-container">
+        <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+
+            <p class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
+                <span class="fs-4 fw-dark">To-do | Login</span>
+            </p>
+            <div class="text-end">
+                <a href="{{url_for('home')}}">
+                    <button type="button" class="btn btn-outline-dark me-2"><i class="bi bi-arrow-left"></i> Back</button>
+                </a>
+
+            </div>
+
+
+        </div>
+    </div>
+</header>
+<hr>
+<div class="bg-light"><br></div>
+<div class="d-flex flex-nowrap text-bg-light my_user-form main-div">
+    <div class="d-flex flex-column flex-shrink-0 p-3 text-bg-light full-info-box " style="width: 700px;">
+{% if message %}
+        <span class="warning-text">{{message}}</span>
+        {% endif %}
+        <form   class="form form-horizontal " method="post" role="form">
+            {{ wtf.form_field(form.username) }}
+            {{ wtf.form_field(form.password) }}
+            <br>
+            <div class="d-grid gap-2">
+                {{ wtf.form_field(form.submit, button_map={'submit':'outline-dark'}) }}
+            </div>
+        </form>
+
+    </div>
+
+</div>
+<footer class="d-flex flex-wrap justify-content-between align-items-center py-3  border-top text-bg-light">
+    <p class="col-md-4 mb-0 text-muted my-footer-text">Alpha | Intended to improve coding skills</p>
+</footer>
+</body>
+</html>
